@@ -17,17 +17,12 @@ import java.util.ArrayList;
  */
 public class Sheep extends BaseRobot {
 
+
+
     /**
      * The DNA values
      */
-    protected Property groupBinding;
-    protected Property groupRadius;
 
-    protected Property foodGreed;
-    protected Property foodRadius;
-
-    protected Property enemyScared;
-    protected Property enemyRadius;
 
     /**
      * end DNA
@@ -42,21 +37,21 @@ public class Sheep extends BaseRobot {
     }
 
     public void init(){
-        groupBinding = new Property(0,10);
-        groupRadius = new Property(0,100);
+        dna.setProperty("groupBinding", new Property(0,10));
+        dna.setProperty("groupRadius", new Property(0,100));
 
-        foodGreed = new Property(0,10);
-        foodRadius = new Property(0,100);
+        dna.setProperty("foodGreed", new Property(0,10));
+        dna.setProperty("foodRadius", new Property(0,100));
 
-        enemyScared = new Property(0,10);
-        enemyRadius = new Property(0,100);
+        dna.setProperty("enemyScared", new Property(0,10));
+        dna.setProperty("enemyRadius", new Property(0,100));
 
         health = new Property(0,100,100);
     }
 
     @Override
-    public boolean setDNA() {
-        return super.setDNA();    //To change body of overridden methods use File | Settings | File Templates.
+    public boolean setDNA(String dnaString) {
+        return super.setDNA(dnaString);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
@@ -78,7 +73,7 @@ public class Sheep extends BaseRobot {
         int groupSize = 0;
 
         for(BaseRobot friend: friends){
-            if(friend.getDistanceSquared(this) <= groupRadius.getValue() * groupRadius.getValue()){
+            if(friend.getDistanceSquared(this) <= dna.getProperty("groupRadius").getValue() * dna.getProperty("groupRadius").getValue()){
                 groupSize++;
                 groupMovement.add(friend.getMovement());
             }

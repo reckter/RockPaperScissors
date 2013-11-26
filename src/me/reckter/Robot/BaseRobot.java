@@ -1,6 +1,8 @@
 package me.reckter.Robot;
 
 import me.reckter.Field.BaseField;
+import me.reckter.Robot.Properties.DNA;
+import me.reckter.Robot.Properties.Property;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
@@ -8,6 +10,7 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,6 +26,7 @@ public class BaseRobot {
     protected float x;
     protected float y;
 
+    protected DNA dna;
 
     protected Vector2f movement;
     protected BaseField field;
@@ -32,6 +36,7 @@ public class BaseRobot {
         this.y = y;
         this.field = field;
         movement = new Vector2f(0,0);
+        dna = new DNA();
     }
 
     /**
@@ -119,14 +124,36 @@ public class BaseRobot {
      * @return the DNA String
      */
     public String getDNA(){
-        return "";
+        HashMap<String, Property> properties = dna.getProperties();
+        String out = "";
+        for(String key: properties.keySet()){
+            Property prop = properties.get(key);
+            out += key + "|" + prop.getMin() + "|" + prop.getMax() + "|" + prop.getValue() + ";";
+        }
+
+        return out;
     }
 
     /**
      * initialises the object with the string
+     * @param dnaString the string to parse the dna out of
      * @return
      */
-    public boolean setDNA(){
+    public boolean setDNA(String dnaString){
+        String[] properties = dnaString.split(";");
+        DNA tempDna = new DNA();
+        for(String prop: properties){
+            String[] input = prop.split("|");
+            if(dna.getProperty(input[0]) == null){
+                return false;
+            }
+
+            float min = Float.parseFloat(input[1]);
+            float max = Float.parseFloat(input[2]);
+            float value = Float.parseFloat(input[3]);
+            tempDna.setProperty(input[0], new Property(min,max,value));
+        }
+        dna = tempDna;
         return true;
     }
 
