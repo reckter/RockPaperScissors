@@ -23,7 +23,9 @@ public class Gameloop extends BasicGame {
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
+
         baseField.populate();
+        baseField.init();
     }
 
     @Override
@@ -32,8 +34,8 @@ public class Gameloop extends BasicGame {
 
         if(input.isKeyPressed(Input.KEY_R)){
             baseField = new BaseField();
-            baseField.init();
             baseField.populate();
+            baseField.init();
         }
         logicTime += delta;
         if(logicTime >= MAX_LOGICTIME){

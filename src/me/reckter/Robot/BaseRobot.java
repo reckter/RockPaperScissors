@@ -161,6 +161,12 @@ public class BaseRobot {
      * randomly initialises the object
      */
     public void randomizeObjects(){
+        HashMap<String, Property> properties = dna.getProperties();
+        for(String key: properties.keySet()){
+            Property prop = properties.get(key);
+            dna.getProperty(key).setValue((float) (Math.random() * prop.getMax()) + prop.getMin());
+        }
+
     }
 
     /**

@@ -18,16 +18,6 @@ import java.util.ArrayList;
 public class Sheep extends BaseRobot {
 
 
-
-    /**
-     * The DNA values
-     */
-
-
-    /**
-     * end DNA
-     */
-
     protected Property health;
 
 
@@ -36,7 +26,12 @@ public class Sheep extends BaseRobot {
         super(x, y, field);
     }
 
+    @Override
     public void init(){
+
+        /**
+         * The DNA values
+         */
         dna.setProperty("groupBinding", new Property(0,10));
         dna.setProperty("groupRadius", new Property(0,100));
 
@@ -47,21 +42,10 @@ public class Sheep extends BaseRobot {
         dna.setProperty("enemyRadius", new Property(0,100));
 
         health = new Property(0,100,100);
-    }
+        size = 10;
+        SPEED = 5;
 
-    @Override
-    public boolean setDNA(String dnaString) {
-        return super.setDNA(dnaString);    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public String getDNA() {
-        return super.getDNA();    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void randomizeObjects() {
-        super.randomizeObjects();    //To change body of overridden methods use File | Settings | File Templates.
+        movement = new Vector2f((float) Math.random(),(float) Math.random());
     }
 
     @Override
@@ -79,7 +63,7 @@ public class Sheep extends BaseRobot {
             }
         }
         groupMovement.scale(1 / groupSize);
-
+        movement = groupMovement;
 
 
         super.logic(delta);    //To change body of overridden methods use File | Settings | File Templates.

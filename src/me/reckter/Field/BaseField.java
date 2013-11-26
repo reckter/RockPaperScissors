@@ -2,6 +2,7 @@ package me.reckter.Field;
 
 import me.reckter.Log;
 import me.reckter.Robot.BaseRobot;
+import me.reckter.Robot.Sheep;
 import org.newdawn.slick.Graphics;
 
 import java.util.ArrayList;
@@ -14,8 +15,8 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class BaseField {
-    static public int WIDTH = 1000;
-    static public int HEIGHT = 1000;
+    static public int WIDTH = 500;
+    static public int HEIGHT = 500;
 
     static public int MIN_X = 0;
     static public int MIN_Y = 0;
@@ -34,6 +35,9 @@ public class BaseField {
      * initializes the baseField
      */
     public void init(){
+        for(BaseRobot robot: robots){
+            robot.init();
+        }
     }
 
 
@@ -41,6 +45,8 @@ public class BaseField {
      * populates the baseField by adding robots to it
      */
     public void populate(){
+        robots.add(new Sheep(WIDTH / 2, HEIGHT / 2, this));
+        robots.add(new Sheep(WIDTH / 2 + 100, HEIGHT / 2 + 100, this));
     }
 
 
