@@ -26,7 +26,9 @@ public class Main {
         app.setUpdateOnlyWhenVisible(false);
         app.setAlwaysRender(true);
 
-        app.setShowFPS(false);
+        app.setShowFPS(true);
+        //app.setTargetFrameRate(60);
+
         app.setDisplayMode(BaseField.HEIGHT,BaseField.WIDTH, false);
         app.start();
     }

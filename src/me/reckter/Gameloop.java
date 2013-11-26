@@ -46,7 +46,7 @@ public class Gameloop extends BasicGame {
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
-        graphics.setBackground(Color.white);
+        graphics.setBackground(Color.black);
         baseField.render(graphics);
     }
 }

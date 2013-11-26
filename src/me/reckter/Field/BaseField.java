@@ -2,7 +2,9 @@ package me.reckter.Field;
 
 import me.reckter.Log;
 import me.reckter.Robot.BaseRobot;
+import me.reckter.Robot.Grass;
 import me.reckter.Robot.Sheep;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import java.util.ArrayList;
@@ -15,8 +17,8 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class BaseField {
-    static public int WIDTH = 500;
-    static public int HEIGHT = 500;
+    static public int WIDTH = 1000;
+    static public int HEIGHT = 1000;
 
     static public int MIN_X = 0;
     static public int MIN_Y = 0;
@@ -25,9 +27,11 @@ public class BaseField {
     static public int MAX_Y = MIN_Y + HEIGHT;
 
     protected ArrayList<BaseRobot> robots;
+    protected ArrayList<BaseRobot> robotsToAdd;
 
     public BaseField(){
         robots = new ArrayList<BaseRobot>();
+        robotsToAdd = new ArrayList<BaseRobot>();
     }
 
 
@@ -46,8 +50,9 @@ public class BaseField {
      * populates the baseField by adding robots to it
      */
     public void populate(){
-        for(int i = 0; i < 5; i++){
-            robots.add(new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
+        for(int i = 0; i < 10; i++){
+           // robots.add(new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
+            robots.add(new Grass((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
         }
     }
 
@@ -57,8 +62,16 @@ public class BaseField {
      * @param delta the time since the last call
      */
     public void logic(int delta){
-        for(BaseRobot robot: robots){
-            robot.logic(delta);
+        for(int i = 0; i < robots.size(); i++){
+            robots.get(i).logic(delta);
+        }
+
+        robots.addAll(robotsToAdd);
+        robotsToAdd = new ArrayList<BaseRobot>();
+        for(int i = 0; i < robots.size(); i++){
+            if(!robots.get(i).isAlive){
+                robots.remove(i);
+            }
         }
     }
 
@@ -71,6 +84,8 @@ public class BaseField {
         for(BaseRobot robot: robots){
             robot.render(g);
         }
+        g.setColor(Color.white);
+        g.drawString("Robots: " + robots.size(), 10, 25);
     }
 
     /**
@@ -81,4 +96,11 @@ public class BaseField {
         return robots;
     }
 
+    /**
+     * adds a robot
+     * @param robot
+     */
+    public void add(BaseRobot robot){
+        robotsToAdd.add(robot);
+    }
  }

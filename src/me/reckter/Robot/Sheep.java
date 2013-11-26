@@ -20,9 +20,11 @@ public class Sheep extends BaseRobot {
 
     protected Property health;
 
+    protected Property hunger;
 
 
-    public Sheep(int x, int y, BaseField field) {
+
+    public Sheep(float x, float y, BaseField field) {
         super(x, y, field);
     }
 
@@ -42,6 +44,9 @@ public class Sheep extends BaseRobot {
         dna.setProperty("enemyRadius", new Property(0,100));
 
         health = new Property(0,100,100);
+        hunger = new Property(0,100,50);
+
+
         size = 10;
         MAX_SPEED = 10;
 
@@ -51,6 +56,8 @@ public class Sheep extends BaseRobot {
 
     @Override
     public void logic(int delta) {
+
+        health.setValue(health.getValue() + hunger.getValue());
         ArrayList<BaseRobot> robots = field.getRobots();
         ArrayList<BaseRobot> friends = getFriends(robots);
 
@@ -58,9 +65,11 @@ public class Sheep extends BaseRobot {
         int groupSize = 0;
 
         for(BaseRobot friend: friends){
-            if(friend.getDistanceSquared(this) <= dna.getProperty("groupRadius").getValue() * dna.getProperty("groupRadius").getValue()){
-                groupSize++;
-                groupMovement.add(friend.getMovement());
+            if(friend instanceof Sheep){
+                if(friend.getDistanceSquared(this) <= dna.getProperty("groupRadius").getValue() * dna.getProperty("groupRadius").getValue()){
+                    groupSize++;
+                    groupMovement.add(friend.getMovement());
+                }
             }
         }
         groupMovement.normalise();
@@ -74,7 +83,7 @@ public class Sheep extends BaseRobot {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.green);
+        g.setColor(Color.blue);
         super.render(g);    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

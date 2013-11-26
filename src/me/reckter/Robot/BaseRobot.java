@@ -29,18 +29,23 @@ public class BaseRobot {
     protected float x;
     protected float y;
 
+    protected long age;
+
     protected DNA dna;
+
+    public boolean isAlive = true;
 
     protected Vector2f movement;
     protected BaseField field;
 
-    public BaseRobot(int x, int y, BaseField field){
+    public BaseRobot(float x, float y, BaseField field){
         this.x = x;
         this.y = y;
         this.field = field;
         this.movement = new Vector2f(0,0);
         this.speed = 0;
         this.dna = new DNA();
+        this.age = 0;
     }
 
     /**
@@ -102,6 +107,9 @@ public class BaseRobot {
         }
         x += movement.x * speed * delta / 1000;
         y += movement.y * speed + delta / 1000;
+
+        age += delta;
+
         checkBoundaries();
     }
 

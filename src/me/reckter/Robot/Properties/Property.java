@@ -32,6 +32,10 @@ public class Property  {
         this.value = 50;
     }
 
+    public void add(float value){
+        this.value += value;
+    }
+
     public float getMin() {
         return min;
     }
