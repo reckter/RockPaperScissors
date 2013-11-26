@@ -51,7 +51,7 @@ public class BaseField {
      */
     public void populate(){
         for(int i = 0; i < 10; i++){
-           // robots.add(new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
+            robots.add(new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
             robots.add(new Grass((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
         }
     }
@@ -64,6 +64,15 @@ public class BaseField {
     public void logic(int delta){
         for(int i = 0; i < robots.size(); i++){
             robots.get(i).logic(delta);
+        }
+
+        for(BaseRobot robotA: robots){
+            for(BaseRobot robotB: robots){
+                if(robotA != robotB && robotA.checkColision(robotB)){
+                    robotA.collide(robotB);
+                    robotB.collide(robotA);
+                }
+            }
         }
 
         robots.addAll(robotsToAdd);

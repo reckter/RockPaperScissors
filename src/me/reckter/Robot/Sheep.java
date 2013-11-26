@@ -4,6 +4,7 @@ import me.reckter.Field.BaseField;
 import me.reckter.Robot.Properties.Property;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class Sheep extends BaseRobot {
     protected Property health;
 
     protected Property hunger;
+    protected float MAX_BITE = 20;
 
 
 
@@ -57,33 +59,88 @@ public class Sheep extends BaseRobot {
     @Override
     public void logic(int delta) {
 
-        health.setValue(health.getValue() + hunger.getValue());
+        health.add((float) (hunger.getValue() / hunger.getMax() - 0.5) * ((float) delta / 100));
+        hunger.add(-10 * ((float) delta / 100));
+
         ArrayList<BaseRobot> robots = field.getRobots();
-        ArrayList<BaseRobot> friends = getFriends(robots);
 
+        //group
         Vector2f groupMovement = new Vector2f(0,0);
-        int groupSize = 0;
+        float maxDistanceFriendsSquared = dna.getProperty("groupRadius").getValue() * dna.getProperty("groupRadius").getValue();
 
-        for(BaseRobot friend: friends){
-            if(friend instanceof Sheep){
-                if(friend.getDistanceSquared(this) <= dna.getProperty("groupRadius").getValue() * dna.getProperty("groupRadius").getValue()){
-                    groupSize++;
-                    groupMovement.add(friend.getMovement());
+        //food
+        Vector2f foodMovement = new Vector2f(0,0);
+        float maxDistanceFoodSquared = dna.getProperty("groupRadius").getValue() * dna.getProperty("groupRadius").getValue();
+
+        //enemies
+        Vector2f enemieMovement = new Vector2f(0,0);
+
+
+        for(BaseRobot robot: robots){
+            /**
+             * Group Movement calculation
+             */
+            if(robot instanceof Sheep){
+                if(getDistanceSquared(robot) <= maxDistanceFriendsSquared){
+                    Vector2f tempMovement = robot.getMovement();
+                    tempMovement.normalise();
+                    tempMovement.scale((float) getDistanceSquared(robot) / maxDistanceFriendsSquared);
+
+                    groupMovement.add(robot.getMovement());
+                }
+                continue;
+            }
+
+            /**
+             * Food calculation
+             */
+            if(robot instanceof Grass){
+                if(getDistanceSquared(robot) <= maxDistanceFoodSquared){
+                    Vector2f tempMovement = new Vector2f((float) getDistanceX(robot), (float) getDistanceY(robot));
+
+                    tempMovement.normalise();
+                    tempMovement.scale((float) getDistanceSquared(robot) / maxDistanceFriendsSquared);
+                    foodMovement.add(tempMovement);
                 }
             }
+
         }
+
+
+        //group
         groupMovement.normalise();
         groupMovement.scale(dna.getProperty("groupBinding").getValue());
 
+        //food
+        foodMovement.normalise();
+        foodMovement.scale(dna.getProperty("foodGreed").getValue() * (1 - (hunger.getValue() / hunger.getMax())) );
+
         movement.add(groupMovement);
+        movement.add(foodMovement);
+
         movement.normalise();
 
         super.logic(delta);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
+    public void collide(BaseRobot with) {
+        if(with instanceof Grass){
+            float bite = with.size;
+            if(bite >= MAX_BITE){
+                bite = MAX_BITE;
+            }
+
+            with.size -= bite;
+            hunger.add(bite);
+        }
+    }
+
+    @Override
     public void render(Graphics g) {
         g.setColor(Color.blue);
         super.render(g);    //To change body of overridden methods use File | Settings | File Templates.
+        g.setColor(Color.magenta);
+        g.fill(new Circle(x,y,(hunger.getValue() / hunger.getMax()) * size));
     }
 }
