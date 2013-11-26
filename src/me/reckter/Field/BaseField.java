@@ -37,6 +37,7 @@ public class BaseField {
     public void init(){
         for(BaseRobot robot: robots){
             robot.init();
+            robot.randomizeObjects();
         }
     }
 
@@ -45,8 +46,9 @@ public class BaseField {
      * populates the baseField by adding robots to it
      */
     public void populate(){
-        robots.add(new Sheep(WIDTH / 2, HEIGHT / 2, this));
-        robots.add(new Sheep(WIDTH / 2 + 100, HEIGHT / 2 + 100, this));
+        for(int i = 0; i < 5; i++){
+            robots.add(new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
+        }
     }
 
 

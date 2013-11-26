@@ -1,6 +1,7 @@
 package me.reckter.Robot;
 
 import me.reckter.Field.BaseField;
+import me.reckter.Log;
 import me.reckter.Robot.Properties.DNA;
 import me.reckter.Robot.Properties.Property;
 import org.newdawn.slick.Graphics;
@@ -20,7 +21,9 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class BaseRobot {
-    public static int SPEED;
+    public int MAX_SPEED;
+
+    protected float speed;
 
     protected float size;
     protected float x;
@@ -35,8 +38,9 @@ public class BaseRobot {
         this.x = x;
         this.y = y;
         this.field = field;
-        movement = new Vector2f(0,0);
-        dna = new DNA();
+        this.movement = new Vector2f(0,0);
+        this.speed = 0;
+        this.dna = new DNA();
     }
 
     /**
@@ -89,8 +93,15 @@ public class BaseRobot {
      * @param delta the ms since the last tick
      */
     public void logic(int delta){
-        x += movement.x * SPEED;
-        y += movement.y * SPEED;
+        Vector2f normalizedMovement = movement;
+        normalizedMovement.normalise();
+
+        speed = movement.length() / normalizedMovement.length();
+        if(speed > MAX_SPEED){
+            speed = MAX_SPEED;
+        }
+        x += movement.x * speed * delta / 1000;
+        y += movement.y * speed + delta / 1000;
         checkBoundaries();
     }
 
@@ -140,18 +151,23 @@ public class BaseRobot {
      * @return
      */
     public boolean setDNA(String dnaString){
+        randomizeObjects();
+        DNA tempDna = dna;
+
+
         String[] properties = dnaString.split(";");
-        DNA tempDna = new DNA();
+
         for(String prop: properties){
-            String[] input = prop.split("|");
-            if(dna.getProperty(input[0]) == null){
+            String[] input = prop.split("\\|");
+            if(tempDna.getProperty(input[0]) == null){
+                Log.error("got a false property:" + input[0]);
                 return false;
             }
 
             float min = Float.parseFloat(input[1]);
             float max = Float.parseFloat(input[2]);
             float value = Float.parseFloat(input[3]);
-            tempDna.setProperty(input[0], new Property(min,max,value));
+            tempDna.setProperty(input[0], new Property(min, max, value));
         }
         dna = tempDna;
         return true;
@@ -222,7 +238,7 @@ public class BaseRobot {
      * renders the Robot
      */
     public void render(Graphics g){
-        g.draw(new Circle(x, y, size));
+        g.fill(new Circle(x, y, size));
     }
 
     public Vector2f getMovement() {

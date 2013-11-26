@@ -32,7 +32,7 @@ public class Gameloop extends BasicGame {
     public void update(GameContainer gameContainer, int delta) throws SlickException {
         Input input = gameContainer.getInput();
 
-        if(input.isKeyPressed(Input.KEY_R)){
+        if(input.isKeyDown(Input.KEY_R)){
             baseField = new BaseField();
             baseField.populate();
             baseField.init();
