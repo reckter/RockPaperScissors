@@ -16,13 +16,10 @@ import java.util.ArrayList;
  * Time: 21:35
  * To change this template use File | Settings | File Templates.
  */
-public class Sheep extends BaseRobot {
+public class Sheep extends Animal {
 
 
-    protected Property health;
-
-    protected Property hunger;
-    protected float MAX_BITE = 20;
+    protected float MAX_BITE = 50;
 
 
 
@@ -58,9 +55,6 @@ public class Sheep extends BaseRobot {
 
     @Override
     public void logic(int delta) {
-
-        health.add((float) (hunger.getValue() / hunger.getMax() - 0.5) * ((float) delta / 100));
-        hunger.add(-10 * ((float) delta / 100));
 
         ArrayList<BaseRobot> robots = field.getRobots();
 
@@ -119,6 +113,7 @@ public class Sheep extends BaseRobot {
         movement.add(foodMovement);
 
         movement.normalise();
+        //movement.scale(speed);
 
         super.logic(delta);    //To change body of overridden methods use File | Settings | File Templates.
     }
@@ -139,7 +134,7 @@ public class Sheep extends BaseRobot {
     @Override
     public void render(Graphics g) {
         g.setColor(Color.blue);
-        super.render(g);    //To change body of overridden methods use File | Settings | File Templates.
+        g.fill(new Circle(x,y,(health.getValue() / health.getMax()) * size));
         g.setColor(Color.magenta);
         g.fill(new Circle(x,y,(hunger.getValue() / hunger.getMax()) * size));
     }

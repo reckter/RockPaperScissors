@@ -17,8 +17,8 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class BaseField {
-    static public int WIDTH = 1000;
-    static public int HEIGHT = 1000;
+    static public int WIDTH = 500;
+    static public int HEIGHT = 500;
 
     static public int MIN_X = 0;
     static public int MIN_Y = 0;
@@ -50,9 +50,11 @@ public class BaseField {
      * populates the baseField by adding robots to it
      */
     public void populate(){
+        for(int i = 0; i < 5; i++){
+            robots.add(new Grass((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
+        }
         for(int i = 0; i < 10; i++){
             robots.add(new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
-            robots.add(new Grass((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
         }
     }
 

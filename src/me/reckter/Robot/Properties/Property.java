@@ -34,6 +34,12 @@ public class Property  {
 
     public void add(float value){
         this.value += value;
+        if(this.value > max){
+            this.value = max;
+        }
+        if(this.value < min){
+            this.value = min;
+        }
     }
 
     public float getMin() {

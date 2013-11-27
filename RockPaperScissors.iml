@@ -9,6 +9,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="AppleJavaExtensions" level="project" />
     <orderEntry type="library" name="Util" level="project" />
+    <orderEntry type="library" name="Util1" level="project" />
   </component>
 </module>
 

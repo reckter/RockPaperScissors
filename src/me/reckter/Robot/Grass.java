@@ -38,6 +38,11 @@ public class Grass extends BaseRobot {
     @Override
     public void logic(int delta) {
 
+
+        if(size <= 0){
+            isAlive = false;
+        }
+
         age += delta;
         size += ((float) delta / 1000) * GROWTH_RATE * (1f - ((float)age / (dna.getProperty("midTerms").getValue() * 1000f)));
 
@@ -54,10 +59,6 @@ public class Grass extends BaseRobot {
 
                 field.add(born);
             }
-        }
-
-        if(size <= 0){
-            isAlive = false;
         }
 
     }
