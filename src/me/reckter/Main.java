@@ -25,6 +25,7 @@ public class Main {
         AppGameContainer app = new AppGameContainer(dsm);
         app.setUpdateOnlyWhenVisible(false);
         app.setAlwaysRender(true);
+        app.setMaximumLogicUpdateInterval(10);
 
         app.setShowFPS(true);
         //app.setTargetFrameRate(60);

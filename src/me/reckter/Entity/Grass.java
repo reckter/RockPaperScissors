@@ -5,6 +5,7 @@ import me.reckter.Entity.Properties.Property;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 
 /**
  * Created with IntelliJ IDEA.
@@ -63,9 +64,16 @@ public class Grass extends BaseEntity {
     }
 
     @Override
+    public Shape getHitbox(){
+        return new Rectangle(x - size / 2, y - size / 2, size, size);
+    }
+
+    @Override
     public void render(Graphics g) {
         float displaySize = size / 5;
         g.setColor(Color.green);
         g.fill(new Rectangle(x - displaySize, y - displaySize, displaySize, displaySize));
     }
+
+
 }

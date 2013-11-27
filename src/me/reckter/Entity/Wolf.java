@@ -35,7 +35,7 @@ public class Wolf extends Animal {
         movement = new Vector2f((float) Math.random(),(float) Math.random());
         movement.normalise();
         movement.scale((float) (MAX_SPEED * Math.random()));
-        MAX_SPEED = 15;
+        MAX_SPEED = 25;
         hungerUsage = 5;
     }
 
@@ -62,7 +62,7 @@ public class Wolf extends Animal {
                     Vector2f tempMovement = new Vector2f((float) getDistanceX(entity), (float) getDistanceY(entity));
 
                     tempMovement.normalise();
-                    tempMovement.scale((float) getDistance(entity) / dna.getProperty("foeRange").getValue());
+                    tempMovement.scale(1 - ((float) getDistance(entity) / dna.getProperty("foeRange").getValue()));
                     foeMovement.add(tempMovement);
 
                 }
@@ -77,7 +77,7 @@ public class Wolf extends Animal {
                     Vector2f tempMovement = new Vector2f((float) getDistanceX(entity), (float) getDistanceY(entity));
 
                     tempMovement.normalise();
-                    tempMovement.scale((float) getDistance(entity) / dna.getProperty("sexRange").getValue());
+                    tempMovement.scale(1 - ((float) getDistance(entity) / dna.getProperty("sexRange").getValue()));
                     sexMovement.add(tempMovement);
                 }
 
@@ -115,7 +115,9 @@ public class Wolf extends Animal {
                 timeSinceBreed = 0;
                 ((Wolf) with).timeSinceBreed = 0;
 
-                field.add(new Wolf(x, y, field));
+                Wolf born = new Wolf(x, y, field);
+                born.dna = dna;
+                field.add(born);
             }
         }
     }

@@ -79,7 +79,7 @@ public class Sheep extends Animal {
                 if(getDistanceSquared(entity) <= maxDistanceFriendsSquared){
                     Vector2f tempMovement = entity.getMovement().copy();
                     tempMovement.normalise();
-                    tempMovement.scale((float) getDistance(entity) / dna.getProperty("groupRadius").getValue());
+                    tempMovement.scale(1 - ((float) getDistance(entity) / dna.getProperty("groupRadius").getValue()));
 
                     groupMovement.add(tempMovement);
                 }
@@ -94,7 +94,7 @@ public class Sheep extends Animal {
                     Vector2f tempMovement = new Vector2f((float) getDistanceX(entity), (float) getDistanceY(entity));
 
                     tempMovement.normalise();
-                    tempMovement.scale((float) getDistance(entity) / dna.getProperty("foodRadius").getValue());
+                    tempMovement.scale(1 - ((float) getDistance(entity) / dna.getProperty("foodRadius").getValue()));
                     foodMovement.add(tempMovement);
                 }
             }
@@ -108,7 +108,7 @@ public class Sheep extends Animal {
                     tempMovement.normalise();
                     tempMovement.scale(-1); //go away from your enemy not towards it!
 
-                    tempMovement.scale((float) getDistance(entity) / dna.getProperty("enemyRadius").getValue());
+                    tempMovement.scale(1 - ((float) getDistance(entity) / dna.getProperty("enemyRadius").getValue()));
                     foodMovement.add(tempMovement);
                 }
             }

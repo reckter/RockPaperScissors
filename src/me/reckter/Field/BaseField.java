@@ -55,7 +55,7 @@ public class BaseField {
      * populates the baseField by adding entities to it
      */
     public void populate(){
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 7; i++){
             entities.add(new Grass((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
         }
         for(int i = 0; i < 10; i++){

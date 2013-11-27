@@ -31,7 +31,7 @@ public class Animal extends BaseEntity {
     public void init() {
 
         size = 10;
-        MAX_SPEED = 10;
+        MAX_SPEED = 20;
         hungerUsage = 10;
         dna.setProperty("breedTime", new Property(10 * 1000, 100 * 1000));
     }
@@ -39,14 +39,15 @@ public class Animal extends BaseEntity {
     @Override
     public void logic(int delta) {
 
+        if(health.getValue() <= health.getMin()){ //died
+            isAlive = false;
+        }
+
         timeSinceBreed += delta;
 
         health.add((float) (hunger.getValue() / hunger.getMax() - 0.5) * ((float) delta / 100));
         hunger.add(-hungerUsage * ((float) delta / 1000));
 
-        if(health.getValue() <= health.getMin()){ //died
-            isAlive = false;
-        }
 
         super.logic(delta);    //To change body of overridden methods use File | Settings | File Templates.
     }
