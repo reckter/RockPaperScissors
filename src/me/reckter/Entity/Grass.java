@@ -1,11 +1,10 @@
-package me.reckter.Robot;
+package me.reckter.Entity;
 
 import me.reckter.Field.BaseField;
-import me.reckter.Robot.Properties.Property;
+import me.reckter.Entity.Properties.Property;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.util.Log;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +13,7 @@ import org.newdawn.slick.util.Log;
  * Time: 18:17
  * To change this template use File | Settings | File Templates.
  */
-public class Grass extends BaseRobot {
+public class Grass extends BaseEntity {
     public final float GROWTH_RATE = 10f;
 
     public Grass(float x, float y, BaseField field) {

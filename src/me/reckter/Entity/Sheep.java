@@ -1,7 +1,7 @@
-package me.reckter.Robot;
+package me.reckter.Entity;
 
 import me.reckter.Field.BaseField;
-import me.reckter.Robot.Properties.Property;
+import me.reckter.Entity.Properties.Property;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
@@ -56,7 +56,7 @@ public class Sheep extends Animal {
     @Override
     public void logic(int delta) {
 
-        ArrayList<BaseRobot> robots = field.getRobots();
+        ArrayList<BaseEntity> entities = field.getEntities();
 
         //group
         Vector2f groupMovement = new Vector2f(0,0);
@@ -71,15 +71,15 @@ public class Sheep extends Animal {
         float maxDistanceEnemySquared = dna.getProperty("enemyRadius").getValue() * dna.getProperty("enemyRadius").getValue();
 
 
-        for(BaseRobot robot: robots){
+        for(BaseEntity entity: entities){
             /**
              * Group Movement calculation
              */
-            if(robot instanceof Sheep){
-                if(getDistanceSquared(robot) <= maxDistanceFriendsSquared){
-                    Vector2f tempMovement = robot.getMovement().copy();
+            if(entity instanceof Sheep){
+                if(getDistanceSquared(entity) <= maxDistanceFriendsSquared){
+                    Vector2f tempMovement = entity.getMovement().copy();
                     tempMovement.normalise();
-                    tempMovement.scale((float) getDistance(robot) / dna.getProperty("groupRadius").getValue());
+                    tempMovement.scale((float) getDistance(entity) / dna.getProperty("groupRadius").getValue());
 
                     groupMovement.add(tempMovement);
                 }
@@ -89,26 +89,26 @@ public class Sheep extends Animal {
             /**
              * Food calculation
              */
-            if(robot instanceof Grass){
-                if(getDistanceSquared(robot) <= maxDistanceFoodSquared){
-                    Vector2f tempMovement = new Vector2f((float) getDistanceX(robot), (float) getDistanceY(robot));
+            if(entity instanceof Grass){
+                if(getDistanceSquared(entity) <= maxDistanceFoodSquared){
+                    Vector2f tempMovement = new Vector2f((float) getDistanceX(entity), (float) getDistanceY(entity));
 
                     tempMovement.normalise();
-                    tempMovement.scale((float) getDistance(robot) / dna.getProperty("foodRadius").getValue());
+                    tempMovement.scale((float) getDistance(entity) / dna.getProperty("foodRadius").getValue());
                     foodMovement.add(tempMovement);
                 }
             }
             /**
              * enemy Movement calucation
              */
-            if(robot instanceof Wolf){
-                if(getDistanceSquared(robot) <= maxDistanceEnemySquared){
-                    Vector2f tempMovement = new Vector2f((float) getDistanceX(robot), (float) getDistanceY(robot));
+            if(entity instanceof Wolf){
+                if(getDistanceSquared(entity) <= maxDistanceEnemySquared){
+                    Vector2f tempMovement = new Vector2f((float) getDistanceX(entity), (float) getDistanceY(entity));
 
                     tempMovement.normalise();
                     tempMovement.scale(-1); //go away from your enemy not towards it!
 
-                    tempMovement.scale((float) getDistance(robot) / dna.getProperty("enemyRadius").getValue());
+                    tempMovement.scale((float) getDistance(entity) / dna.getProperty("enemyRadius").getValue());
                     foodMovement.add(tempMovement);
                 }
             }
@@ -134,7 +134,7 @@ public class Sheep extends Animal {
     }
 
     @Override
-    public void collide(BaseRobot with) {
+    public void collide(BaseEntity with) {
         if(with instanceof Grass){
             float bite = with.size;
             if(bite >= MAX_BITE){

@@ -1,8 +1,7 @@
-package me.reckter.Robot;
+package me.reckter.Entity;
 
 import me.reckter.Field.BaseField;
-import me.reckter.Log;
-import me.reckter.Robot.Properties.Property;
+import me.reckter.Entity.Properties.Property;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
@@ -43,7 +42,7 @@ public class Wolf extends Animal {
 
     @Override
     public void logic(int delta) {
-        ArrayList<BaseRobot> robots = field.getRobots();
+        ArrayList<BaseEntity> entities = field.getEntities();
 
         // foes
         Vector2f foeMovement = new Vector2f(0,0);
@@ -54,16 +53,16 @@ public class Wolf extends Animal {
         float maxDistanceSex = dna.getProperty("sexRange").getValue() * dna.getProperty("sexRange").getValue();
 
 
-        for(BaseRobot robot: robots){
+        for(BaseEntity entity: entities){
             /**
              * foe movement
              */
-            if(robot instanceof Sheep){
-                if(getDistanceSquared(robot) <= maxDistanceFoe){
-                    Vector2f tempMovement = new Vector2f((float) getDistanceX(robot), (float) getDistanceY(robot));
+            if(entity instanceof Sheep){
+                if(getDistanceSquared(entity) <= maxDistanceFoe){
+                    Vector2f tempMovement = new Vector2f((float) getDistanceX(entity), (float) getDistanceY(entity));
 
                     tempMovement.normalise();
-                    tempMovement.scale((float) getDistance(robot) / dna.getProperty("foeRange").getValue());
+                    tempMovement.scale((float) getDistance(entity) / dna.getProperty("foeRange").getValue());
                     foeMovement.add(tempMovement);
 
                 }
@@ -73,12 +72,12 @@ public class Wolf extends Animal {
              * sex movement
              */
 
-            if(robot instanceof Wolf){
-                if(getDistanceSquared(robot) <= maxDistanceFoe){
-                    Vector2f tempMovement = new Vector2f((float) getDistanceX(robot), (float) getDistanceY(robot));
+            if(entity instanceof Wolf){
+                if(getDistanceSquared(entity) <= maxDistanceFoe){
+                    Vector2f tempMovement = new Vector2f((float) getDistanceX(entity), (float) getDistanceY(entity));
 
                     tempMovement.normalise();
-                    tempMovement.scale((float) getDistance(robot) / dna.getProperty("sexRange").getValue());
+                    tempMovement.scale((float) getDistance(entity) / dna.getProperty("sexRange").getValue());
                     sexMovement.add(tempMovement);
                 }
 
@@ -106,7 +105,7 @@ public class Wolf extends Animal {
 
 
     @Override
-    public void collide(BaseRobot with) {
+    public void collide(BaseEntity with) {
         if(with instanceof Sheep){
             ((Sheep) with).health.setValue(health.getMin());
             hunger.add(70);

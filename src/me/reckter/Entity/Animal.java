@@ -1,7 +1,7 @@
-package me.reckter.Robot;
+package me.reckter.Entity;
 
 import me.reckter.Field.BaseField;
-import me.reckter.Robot.Properties.Property;
+import me.reckter.Entity.Properties.Property;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +10,7 @@ import me.reckter.Robot.Properties.Property;
  * Time: 08:25
  * To change this template use File | Settings | File Templates.
  */
-public class Animal extends BaseRobot {
+public class Animal extends BaseEntity {
 
 
     protected int timeSinceBreed;

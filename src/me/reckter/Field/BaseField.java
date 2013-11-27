@@ -1,10 +1,9 @@
 package me.reckter.Field;
 
-import me.reckter.Log;
-import me.reckter.Robot.BaseRobot;
-import me.reckter.Robot.Grass;
-import me.reckter.Robot.Sheep;
-import me.reckter.Robot.Wolf;
+import me.reckter.Entity.BaseEntity;
+import me.reckter.Entity.Grass;
+import me.reckter.Entity.Sheep;
+import me.reckter.Entity.Wolf;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -32,12 +31,12 @@ public class BaseField {
      */
     public Sheep testSheep;
 
-    protected ArrayList<BaseRobot> robots;
-    protected ArrayList<BaseRobot> robotsToAdd;
+    protected ArrayList<BaseEntity> entities;
+    protected ArrayList<BaseEntity> entitiesToAdd;
 
     public BaseField(){
-        robots = new ArrayList<BaseRobot>();
-        robotsToAdd = new ArrayList<BaseRobot>();
+        entities = new ArrayList<BaseEntity>();
+        entitiesToAdd = new ArrayList<BaseEntity>();
     }
 
 
@@ -45,29 +44,29 @@ public class BaseField {
      * initializes the baseField
      */
     public void init(){
-        for(BaseRobot robot: robots){
-            robot.init();
-            robot.randomizeObjects();
+        for(BaseEntity entity: entities){
+            entity.init();
+            entity.randomizeObjects();
         }
     }
 
 
     /**
-     * populates the baseField by adding robots to it
+     * populates the baseField by adding entities to it
      */
     public void populate(){
         for(int i = 0; i < 5; i++){
-            robots.add(new Grass((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
+            entities.add(new Grass((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
         }
         for(int i = 0; i < 10; i++){
-            robots.add(new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
+            entities.add(new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
         }
 
         for(int i = 0; i < 3; i++){
-            robots.add(new Wolf((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
+            entities.add(new Wolf((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
         }
         testSheep = new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this);
-        robots.add(testSheep);
+        entities.add(testSheep);
 
     }
 
@@ -77,56 +76,56 @@ public class BaseField {
      * @param delta the time since the last call
      */
     public void logic(int delta){
-        for(int i = 0; i < robots.size(); i++){
-            robots.get(i).logic(delta);
+        for(int i = 0; i < entities.size(); i++){
+            entities.get(i).logic(delta);
         }
 
-        for(BaseRobot robotA: robots){
-            for(BaseRobot robotB: robots){
-                if(robotA != robotB && robotA.checkColision(robotB)){
-                    robotA.collide(robotB);
-                    robotB.collide(robotA);
+        for(BaseEntity entityA: entities){
+            for(BaseEntity entityB: entities){
+                if(entityA != entityB && entityA.checkColision(entityB)){
+                    entityA.collide(entityB);
+                    entityB.collide(entityA);
                 }
             }
         }
 
-        robots.addAll(robotsToAdd);
+        entities.addAll(entitiesToAdd);
 
-        robotsToAdd = new ArrayList<BaseRobot>();
-        for(int i = 0; i < robots.size(); i++){
-            if(!robots.get(i).isAlive){
-                robots.remove(i);
+        entitiesToAdd = new ArrayList<BaseEntity>();
+        for(int i = 0; i < entities.size(); i++){
+            if(!entities.get(i).isAlive){
+                entities.remove(i);
             }
         }
     }
 
 
     /**
-     * renders all robots on the baseField
+     * renders all entities on the baseField
      * @param g the graphics object
      */
     public void render(Graphics g){
-        for(BaseRobot robot: robots){
-            robot.render(g);
+        for(BaseEntity entity: entities){
+            entity.render(g);
         }
         g.setColor(Color.white);
-        g.drawString("Robots: " + robots.size(), 10, 25);
+        g.drawString("Enities: " + entities.size(), 10, 25);
         g.drawString("DEBUG: (" + testSheep.getX() + "|" + testSheep.getY() + ")", 10, 40);
     }
 
     /**
-     * returns all robots
-     * @return Array list of all the robots
+     * returns all entities
+     * @return Array list of all the entities
      */
-    public ArrayList<BaseRobot> getRobots() {
-        return robots;
+    public ArrayList<BaseEntity> getEntities() {
+        return entities;
     }
 
     /**
-     * adds a robot
-     * @param robot
+     * adds a entity
+     * @param entity
      */
-    public void add(BaseRobot robot){
-        robotsToAdd.add(robot);
+    public void add(BaseEntity entity){
+        entitiesToAdd.add(entity);
     }
  }

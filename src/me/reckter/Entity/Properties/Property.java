@@ -1,4 +1,4 @@
-package me.reckter.Robot.Properties;
+package me.reckter.Entity.Properties;
 
 /**
  * Created with IntelliJ IDEA.
