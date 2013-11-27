@@ -4,6 +4,8 @@ import me.reckter.Field.BaseField;
 import me.reckter.Robot.Properties.Property;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
@@ -28,6 +30,11 @@ public class Wolf extends Animal {
 
         dna.setProperty("sexRange", new Property(0,100));
         dna.setProperty("sexNeed", new Property(0,1));
+
+        MAX_SPEED = 10;
+        size = 10;
+
+        movement = new Vector2f(0,0);
     }
 
 
@@ -53,7 +60,7 @@ public class Wolf extends Animal {
                     Vector2f tempMovement = new Vector2f((float) getDistanceX(robot), (float) getDistanceY(robot));
 
                     tempMovement.normalise();
-                    tempMovement.scale((float) getDistanceSquared(robot) / maxDistanceFoe);
+                    tempMovement.scale((float) getDistance(robot) / dna.getProperty("foeRange").getValue());
                     foeMovement.add(tempMovement);
 
                 }
@@ -68,8 +75,8 @@ public class Wolf extends Animal {
                     Vector2f tempMovement = new Vector2f((float) getDistanceX(robot), (float) getDistanceY(robot));
 
                     tempMovement.normalise();
-                    tempMovement.scale((float) getDistanceSquared(robot) / maxDistanceSex);
-                    sexMovement.add(tempMovement);
+                    tempMovement.scale((float) getDistance(robot) / dna.getProperty("sexRange").getValue());
+                   // sexMovement.add(tempMovement);
                 }
 
             }
@@ -86,14 +93,29 @@ public class Wolf extends Animal {
         movement.add(foeMovement);
         movement.add(sexMovement);
 
-        movement.normalise();
+       // movement.normalise();
 
         super.logic(delta);
+    }
+
+
+    @Override
+    public void collide(BaseRobot with) {
+        if(with instanceof Sheep){
+            ((Sheep) with).health.setValue(health.getMin());
+            hunger.add(70);
+        }
     }
 
     @Override
     public void render(Graphics g) {
         g.setColor(Color.red);
-        super.render(g);
+        g.fill(new Circle(x,y,(health.getValue() / health.getMax()) * size));
+        g.setColor(Color.magenta);
+        g.fill(new Circle(x, y, (hunger.getValue() / hunger.getMax()) * size));
+
+        g.setColor(Color.white);
+        g.draw(new Line(x,y, x + movement.x * MAX_SPEED, y + movement.y * MAX_SPEED));
+
     }
 }

@@ -98,16 +98,18 @@ public class BaseRobot {
      * @param delta the ms since the last tick
      */
     public void logic(int delta){
-        Vector2f normalizedMovement = movement;
-        normalizedMovement.normalise();
 
-        speed = movement.length() / normalizedMovement.length();
-        if(speed > MAX_SPEED){
-            speed = MAX_SPEED;
+        if(movement.lengthSquared() != 0){
+            Vector2f normalizedMovement = movement;
+            normalizedMovement.normalise();
+
+            speed = movement.length() / normalizedMovement.length();
+            if(speed > MAX_SPEED){
+                speed = MAX_SPEED;
+            }
+            x += movement.x * speed * delta / 1000;
+            y += movement.y * speed + delta / 1000;
         }
-        x += movement.x * speed * delta / 1000;
-        y += movement.y * speed + delta / 1000;
-
         age += delta;
 
         checkBoundaries();
@@ -122,7 +124,7 @@ public class BaseRobot {
             movement.x = -movement.x;
         }
 
-        if(x > BaseField.MAX_Y){
+        if(x > BaseField.MAX_X){
             x = BaseField.MAX_X;
             movement.x = -movement.x;
         }

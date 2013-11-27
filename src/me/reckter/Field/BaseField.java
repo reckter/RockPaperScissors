@@ -4,6 +4,7 @@ import me.reckter.Log;
 import me.reckter.Robot.BaseRobot;
 import me.reckter.Robot.Grass;
 import me.reckter.Robot.Sheep;
+import me.reckter.Robot.Wolf;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -25,6 +26,11 @@ public class BaseField {
 
     static public int MAX_X = MIN_X + WIDTH;
     static public int MAX_Y = MIN_Y + HEIGHT;
+
+    /**
+     * debug
+     */
+    public Sheep testSheep;
 
     protected ArrayList<BaseRobot> robots;
     protected ArrayList<BaseRobot> robotsToAdd;
@@ -56,6 +62,13 @@ public class BaseField {
         for(int i = 0; i < 10; i++){
             robots.add(new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
         }
+
+        for(int i = 0; i < 3; i++){
+            robots.add(new Wolf((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
+        }
+        testSheep = new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this);
+        robots.add(testSheep);
+
     }
 
 
@@ -78,6 +91,7 @@ public class BaseField {
         }
 
         robots.addAll(robotsToAdd);
+
         robotsToAdd = new ArrayList<BaseRobot>();
         for(int i = 0; i < robots.size(); i++){
             if(!robots.get(i).isAlive){
@@ -97,6 +111,7 @@ public class BaseField {
         }
         g.setColor(Color.white);
         g.drawString("Robots: " + robots.size(), 10, 25);
+        g.drawString("DEBUG: (" + testSheep.getX() + "|" + testSheep.getY() + ")", 10, 40);
     }
 
     /**

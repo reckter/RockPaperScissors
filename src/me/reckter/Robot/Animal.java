@@ -18,6 +18,8 @@ public class Animal extends BaseRobot {
 
     public Animal(float x, float y, BaseField field) {
         super(x, y, field);
+        hunger = new Property(0,100,50);
+        health = new Property(0,100,100);
     }
 
     @Override

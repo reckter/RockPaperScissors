@@ -5,6 +5,7 @@ import me.reckter.Robot.Properties.Property;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class Sheep extends Animal {
 
         movement = new Vector2f((float) Math.random(),(float) Math.random());
         movement.normalise();
+        movement.scale((float) (speed * Math.random()));
     }
 
     @Override
@@ -64,10 +66,11 @@ public class Sheep extends Animal {
 
         //food
         Vector2f foodMovement = new Vector2f(0,0);
-        float maxDistanceFoodSquared = dna.getProperty("groupRadius").getValue() * dna.getProperty("groupRadius").getValue();
+        float maxDistanceFoodSquared = dna.getProperty("foodRadius").getValue() * dna.getProperty("foodRadius").getValue();
 
         //enemies
         Vector2f enemieMovement = new Vector2f(0,0);
+        float maxDistanceEnemySquared = dna.getProperty("enemyRadius").getValue() * dna.getProperty("enemyRadius").getValue();
 
 
         for(BaseRobot robot: robots){
@@ -76,11 +79,11 @@ public class Sheep extends Animal {
              */
             if(robot instanceof Sheep){
                 if(getDistanceSquared(robot) <= maxDistanceFriendsSquared){
-                    Vector2f tempMovement = robot.getMovement();
+                    Vector2f tempMovement = robot.getMovement().copy();
                     tempMovement.normalise();
-                    tempMovement.scale((float) getDistanceSquared(robot) / maxDistanceFriendsSquared);
+                    tempMovement.scale((float) getDistance(robot) / dna.getProperty("groupRadius").getValue());
 
-                    groupMovement.add(robot.getMovement());
+                    groupMovement.add(tempMovement);
                 }
                 continue;
             }
@@ -93,7 +96,21 @@ public class Sheep extends Animal {
                     Vector2f tempMovement = new Vector2f((float) getDistanceX(robot), (float) getDistanceY(robot));
 
                     tempMovement.normalise();
-                    tempMovement.scale((float) getDistanceSquared(robot) / maxDistanceFriendsSquared);
+                    tempMovement.scale((float) getDistance(robot) / dna.getProperty("foodRadius").getValue());
+                    foodMovement.add(tempMovement);
+                }
+            }
+            /**
+             * enemy Movement calucation
+             */
+            if(robot instanceof Wolf){
+                if(getDistanceSquared(robot) <= maxDistanceEnemySquared){
+                    Vector2f tempMovement = new Vector2f((float) getDistanceX(robot), (float) getDistanceY(robot));
+
+                    tempMovement.normalise();
+                    tempMovement.scale(-1); //go away from your enemy not towards it!
+
+                    tempMovement.scale((float) getDistance(robot) / dna.getProperty("enemyRadius").getValue());
                     foodMovement.add(tempMovement);
                 }
             }
@@ -113,7 +130,7 @@ public class Sheep extends Animal {
         movement.add(foodMovement);
 
         movement.normalise();
-        //movement.scale(speed);
+        movement.scale(speed);
 
         super.logic(delta);    //To change body of overridden methods use File | Settings | File Templates.
     }
@@ -134,8 +151,11 @@ public class Sheep extends Animal {
     @Override
     public void render(Graphics g) {
         g.setColor(Color.blue);
-        g.fill(new Circle(x,y,(health.getValue() / health.getMax()) * size));
+        g.fill(new Circle(x, y, (health.getValue() / health.getMax()) * size));
         g.setColor(Color.magenta);
-        g.fill(new Circle(x,y,(hunger.getValue() / hunger.getMax()) * size));
+        g.fill(new Circle(x, y, (hunger.getValue() / hunger.getMax()) * size));
+
+        g.setColor(Color.white);
+        g.draw(new Line(x,y, x + movement.x * MAX_SPEED, y + movement.y * MAX_SPEED));
     }
 }
