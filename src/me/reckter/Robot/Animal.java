@@ -12,8 +12,13 @@ import me.reckter.Robot.Properties.Property;
  */
 public class Animal extends BaseRobot {
 
+
+    protected int timeSinceBreed;
+
+
     protected Property health;
     protected Property hunger;
+    protected float hungerUsage;
 
 
     public Animal(float x, float y, BaseField field) {
@@ -23,10 +28,21 @@ public class Animal extends BaseRobot {
     }
 
     @Override
+    public void init() {
+
+        size = 10;
+        MAX_SPEED = 10;
+        hungerUsage = 10;
+        dna.setProperty("breedTime", new Property(10 * 1000, 100 * 1000));
+    }
+
+    @Override
     public void logic(int delta) {
 
+        timeSinceBreed += delta;
+
         health.add((float) (hunger.getValue() / hunger.getMax() - 0.5) * ((float) delta / 100));
-        hunger.add(-10 * ((float) delta / 1000));
+        hunger.add(-hungerUsage * ((float) delta / 1000));
 
         if(health.getValue() <= health.getMin()){ //died
             isAlive = false;

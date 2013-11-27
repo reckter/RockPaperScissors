@@ -47,12 +47,10 @@ public class Sheep extends Animal {
         hunger = new Property(0,100,50);
 
 
-        size = 10;
-        MAX_SPEED = 10;
-
-        movement = new Vector2f((float) Math.random(),(float) Math.random());
+        movement = new Vector2f((float) Math.random() * 2 - 1,(float) Math.random() * 2 - 1);
         movement.normalise();
-        movement.scale((float) (speed * Math.random()));
+        movement.scale((float) (MAX_SPEED));
+        super.init();
     }
 
     @Override
@@ -129,8 +127,8 @@ public class Sheep extends Animal {
         movement.add(groupMovement);
         movement.add(foodMovement);
 
-        movement.normalise();
-        movement.scale(speed);
+      //  movement.normalise();
+       // movement.scale(speed);
 
         super.logic(delta);    //To change body of overridden methods use File | Settings | File Templates.
     }
@@ -156,6 +154,6 @@ public class Sheep extends Animal {
         g.fill(new Circle(x, y, (hunger.getValue() / hunger.getMax()) * size));
 
         g.setColor(Color.white);
-        g.draw(new Line(x,y, x + movement.x * MAX_SPEED, y + movement.y * MAX_SPEED));
+        g.draw(new Line(x,y, x + movement.x, y + movement.y));
     }
 }

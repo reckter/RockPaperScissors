@@ -54,7 +54,7 @@ public class Grass extends BaseRobot {
                 born.init();
                 born.dna = dna;
                 born.size = dna.getProperty("dubliateSize").getValue();
-                size -= 2 * dna.getProperty("dubliateSize").getValue(); //for every point the mother looses 2
+                size -= 3 * dna.getProperty("dubliateSize").getValue(); //for every point the mother looses 3
 
 
                 field.add(born);

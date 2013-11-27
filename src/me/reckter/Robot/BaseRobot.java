@@ -46,6 +46,7 @@ public class BaseRobot {
         this.speed = 0;
         this.dna = new DNA();
         this.age = 0;
+        this.MAX_SPEED = 10;
     }
 
     /**
@@ -100,15 +101,19 @@ public class BaseRobot {
     public void logic(int delta){
 
         if(movement.lengthSquared() != 0){
-            Vector2f normalizedMovement = movement;
+            Vector2f normalizedMovement = movement.copy();
             normalizedMovement.normalise();
 
             speed = movement.length() / normalizedMovement.length();
             if(speed > MAX_SPEED){
+
                 speed = MAX_SPEED;
+                movement.normalise();
+                movement.scale(speed);
             }
-            x += movement.x * speed * delta / 1000;
-            y += movement.y * speed + delta / 1000;
+         //   Log.debug("movement: (" + movement.x + "|" + movement.y + ") " + movement.length());
+            x += normalizedMovement.x * speed * (float) delta / 1000f;
+            y += normalizedMovement.y * speed * (float) delta / 1000f;
         }
         age += delta;
 
