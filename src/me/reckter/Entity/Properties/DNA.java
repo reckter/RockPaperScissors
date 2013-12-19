@@ -3,6 +3,7 @@ package me.reckter.Entity.Properties;
 import me.reckter.Log;
 
 import java.util.HashMap;
+import java.util.MissingResourceException;
 import java.util.Properties;
 
 /**
@@ -29,14 +30,51 @@ public class DNA {
         return properties.get(name);
     }
 
+    /**
+     * sets the chance to mutate paremeer and sets it to not mutate
+     * @param chance
+     */
+    public void setChanceToMutate(float chance){
+        Property chanceToMutate = new Property(0,1, chance);
+        chanceToMutate.setDoesMutate(false);
+        properties.put("chanceToMutate",chanceToMutate);
+    }
 
+    /**
+     * sets the mutate percentage parameter and sets it to not mutate
+     * @param chance
+     */
+    public void setMutatePercentage(float chance){
+        Property mutatePercentage = new Property(0,1, chance);
+        mutatePercentage.setDoesMutate(false);
+        properties.put("mutatePercentage",mutatePercentage);
+    }
+
+    /**
+     * mutates all the values. There has to be 2 properties set "chanceToMutate" and "mutatePercentage" both between 0 and 1
+     * If there are not set then good luck! (setChanceToMutate and setMutatePercentage)
+     */
+    public void mutate() throws MissingResourceException {
+        float chanceToMutate = 0;
+        float mutatePercentage = 0;
+        try{
+            chanceToMutate = properties.get("chanceToMutate").getValue();
+            mutatePercentage = properties.get("mutatePercentage").getValue();
+        }
+        catch(NullPointerException e){
+            throw new MissingResourceException("chanceToMutate or mutatePercantage was not set", this.getClass().getName(),"");
+        }
+        for(Property property: properties.values()){
+            property.mutate(chanceToMutate,mutatePercentage);
+        }
+    }
 
     /**
      * creates a String of all the variables that are DNA-important
      * @return the DNA String
      */
     public String getDNA(){
-        
+
         String out = "";
         for(String key: properties.keySet()){
             Property prop = properties.get(key);

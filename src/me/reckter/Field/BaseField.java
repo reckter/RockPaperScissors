@@ -46,7 +46,7 @@ public class BaseField {
     public void init(){
         for(BaseEntity entity: entities){
             entity.init();
-            entity.randomizeObjects();
+            entity.getDNA().randomizeObjects();
         }
     }
 

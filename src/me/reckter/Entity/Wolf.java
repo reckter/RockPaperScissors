@@ -26,6 +26,9 @@ public class Wolf extends Animal {
     public void init(){
 
         super.init();
+        dna.setChanceToMutate(0.5f);
+        dna.setMutatePercentage(0.5f);
+
         dna.setProperty("foeRange", new Property(0,100));
         dna.setProperty("foeGreed", new Property(0,1));
 

@@ -34,6 +34,9 @@ public class Sheep extends Animal {
         /**
          * The DNA values
          */
+        dna.setChanceToMutate(0.5f);
+        dna.setMutatePercentage(0.5f);
+
         dna.setProperty("groupBinding", new Property(0,1));
         dna.setProperty("groupRadius", new Property(0,100));
 

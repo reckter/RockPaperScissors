@@ -15,6 +15,8 @@ public class Property  {
 
     protected float value;
 
+    protected boolean doesMutate;
+
     public Property(float min, float max){
         this.min = min;
         this.max = max;
@@ -30,16 +32,32 @@ public class Property  {
         this.max = 0;
         this.min = 100;
         this.value = 50;
+        this.doesMutate = false;
     }
 
+    public void mutate(float chanceToMutate, float mutatePercentage){
+        if(doesMutate){
+            if(Math.random() < chanceToMutate){
+                setValue(this.value * (1 + ((float) Math.random() * 2 * mutatePercentage * mutatePercentage - mutatePercentage)));
+            }
+        }
+    }
+
+
+    public boolean doesMutate() {
+        return doesMutate;
+    }
+
+    public void setDoesMutate(boolean doesMutate) {
+        this.doesMutate = doesMutate;
+    }
+
+    /**
+     * adds the argument to the value (respects max and min)
+     * @param value
+     */
     public void add(float value){
-        this.value += value;
-        if(this.value > max){
-            this.value = max;
-        }
-        if(this.value < min){
-            this.value = min;
-        }
+        setValue(this.value + value);
     }
 
     public float getMin() {
@@ -62,6 +80,10 @@ public class Property  {
         return value;
     }
 
+    /**
+     * sets the value to the argument (respects max and min)
+     * @param value
+     */
     public void setValue(float value) {
         if(value > max){
             value = max;

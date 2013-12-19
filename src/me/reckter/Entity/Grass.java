@@ -25,6 +25,9 @@ public class Grass extends BaseEntity {
 
     @Override
     public void init(){
+        dna.setChanceToMutate(0.5f);
+        dna.setMutatePercentage(0.5f);
+
         dna.setProperty("sizeToDublicate", new Property(0,100));
 
         dna.setProperty("dublicatesNumbers", new Property(0,3));
@@ -57,6 +60,8 @@ public class Grass extends BaseEntity {
                 born.size = dna.getProperty("dublicateSize").getValue();
                 size -= 3 * dna.getProperty("dublicateSize").getValue(); //for every point the mother looses 3
 
+                born.dna = dna;
+                born.dna.mutate();
 
                 field.add(born);
             }
