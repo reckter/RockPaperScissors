@@ -136,7 +136,9 @@ public class Sheep extends Animal {
     @Override
     public void collide(BaseEntity with) {
         if(with instanceof Grass){
+
             float bite = with.size;
+
             if(bite >= MAX_BITE){
                 bite = MAX_BITE;
             }

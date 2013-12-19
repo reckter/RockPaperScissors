@@ -65,7 +65,7 @@ public class Property  {
     public void setValue(float value) {
         if(value > max){
             value = max;
-        }else if( value < min){
+        }else if(value < min){
             value = min;
         }
 

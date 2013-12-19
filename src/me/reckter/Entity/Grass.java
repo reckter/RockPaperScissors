@@ -1,11 +1,13 @@
 package me.reckter.Entity;
 
+import me.reckter.Entity.Animal;
 import me.reckter.Field.BaseField;
 import me.reckter.Entity.Properties.Property;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.util.Log;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,17 +29,16 @@ public class Grass extends BaseEntity {
 
         dna.setProperty("dublicatesNumbers", new Property(0,3));
         dna.setProperty("dublicateRange", new Property(0,100));
-        dna.setProperty("dubliateSize", new Property(5,20));
+        dna.setProperty("dublicateSize", new Property(5,20));
 
 
-        dna.setProperty("midTerms", new Property(1,100));
+        dna.setProperty("midTerms", new Property(30,100));
 
         size = 50;
     }
 
     @Override
     public void logic(int delta) {
-
 
         if(size <= 0){
             isAlive = false;
@@ -53,14 +54,13 @@ public class Grass extends BaseEntity {
                                         (float) (this.y + (Math.random() * dna.getProperty("dublicateRange").getValue()) - (dna.getProperty("dublicateRange").getValue() / 2)), field);
                 born.init();
                 born.dna = dna;
-                born.size = dna.getProperty("dubliateSize").getValue();
-                size -= 3 * dna.getProperty("dubliateSize").getValue(); //for every point the mother looses 3
+                born.size = dna.getProperty("dublicateSize").getValue();
+                size -= 3 * dna.getProperty("dublicateSize").getValue(); //for every point the mother looses 3
 
 
                 field.add(born);
             }
         }
-
     }
 
     @Override
@@ -74,6 +74,4 @@ public class Grass extends BaseEntity {
         g.setColor(Color.green);
         g.fill(new Rectangle(x - displaySize, y - displaySize, displaySize, displaySize));
     }
-
-
 }

@@ -17,8 +17,8 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class BaseField {
-    static public int WIDTH = 500;
-    static public int HEIGHT = 500;
+    static public int WIDTH = 1000;
+    static public int HEIGHT = 1000;
 
     static public int MIN_X = 0;
     static public int MIN_Y = 0;
@@ -55,14 +55,14 @@ public class BaseField {
      * populates the baseField by adding entities to it
      */
     public void populate(){
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < 20; i++){
             entities.add(new Grass((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
         }
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 25; i++){
             entities.add(new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
         }
 
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 10; i++){
             entities.add(new Wolf((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this));
         }
         testSheep = new Sheep((int) (Math.random() * WIDTH), (int) (Math.random() * HEIGHT), this);
